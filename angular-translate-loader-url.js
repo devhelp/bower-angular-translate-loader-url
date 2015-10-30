@@ -1,6 +1,6 @@
 /*!
  * angular-translate - v2.8.1 - 2015-10-01
- * 
+ *
  * Copyright (c) 2015 The angular-translate team, Pascal Precht; Licensed MIT
  */
 (function (root, factory) {
@@ -50,8 +50,13 @@ function $translateUrlLoader($q, $http) {
     }
 
     var requestParams = {};
+    var queryParameter = options.queryParameter || 'lang';
 
-    requestParams[options.queryParameter || 'lang'] = options.key;
+    if (options.url.indexOf('{' + queryParameter + '}')) {
+      options.url = options.url.replace('{' + queryParameter + '}', options.key);
+    } else {
+      requestParams[options.queryParameter || 'lang'] = options.key;
+    }
 
     return $http(angular.extend({
       url: options.url,
